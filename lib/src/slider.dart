@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:vibration/vibration.dart';
 
-
 class SliderButton extends StatefulWidget {
   ///To make button more customizable add your child widget
   final Widget? child;
@@ -47,7 +46,7 @@ class SliderButton extends StatefulWidget {
 
   SliderButton({
     required this.action,
-    this.radius=100,
+    this.radius = 100,
     this.boxShadow,
     this.child,
     this.vibrationFlag = false,
@@ -82,7 +81,6 @@ class _SliderButtonState extends State<SliderButton> {
 
   @override
   Widget build(BuildContext context) {
-
     return flag == true
         ? _control()
         : widget.dismissible == true
@@ -93,17 +91,20 @@ class _SliderButtonState extends State<SliderButton> {
   Widget _control() => Container(
         height: widget.height,
         width: widget.width,
-        decoration: BoxDecoration(color: widget.disable ? Colors.grey.shade700 : widget.backgroundColor, borderRadius: BorderRadius.circular(widget.radius  )),
+        decoration: BoxDecoration(
+            color:
+                widget.disable ? Colors.grey.shade700 : widget.backgroundColor,
+            borderRadius: BorderRadius.circular(widget.radius)),
         alignment: Alignment.centerLeft,
         child: Stack(
           alignment: Alignment.centerLeft,
           children: <Widget>[
             Container(
-
               alignment: widget.alignLabel,
               child: widget.shimmer && !widget.disable
                   ? Shimmer.fromColors(
-                      baseColor: widget.disable ? Colors.grey : widget.baseColor,
+                      baseColor:
+                          widget.disable ? Colors.grey : widget.baseColor,
                       highlightColor: widget.highlightedColor,
                       child: widget.label ?? Text(''),
                     )
@@ -118,7 +119,11 @@ class _SliderButtonState extends State<SliderButton> {
                       height: (widget.height - 70),
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(
-                        left: (widget.height - (widget.buttonSize == null ? widget.height * 0.9 : widget.buttonSize)!) / 2,
+                        left: (widget.height -
+                                (widget.buttonSize == null
+                                    ? widget.height * 0.9
+                                    : widget.buttonSize)!) /
+                            2,
                       ),
                       child: widget.child ??
                           Container(
@@ -131,7 +136,8 @@ class _SliderButtonState extends State<SliderButton> {
                                       ]
                                     : null,
                                 color: Colors.grey,
-                                borderRadius: BorderRadius.circular(widget.radius )),
+                                borderRadius:
+                                    BorderRadius.circular(widget.radius)),
                             child: Center(child: widget.icon),
                           ),
                     ),
@@ -139,7 +145,9 @@ class _SliderButtonState extends State<SliderButton> {
                 : Dismissible(
                     key: UniqueKey(),
                     direction: DismissDirection.startToEnd,
-                    dismissThresholds: {DismissDirection.startToEnd: widget.dismissThresholds},
+                    dismissThresholds: {
+                      DismissDirection.startToEnd: widget.dismissThresholds
+                    },
 
                     ///gives direction of swiping in argument.
                     onDismissed: (dir) async {
@@ -152,12 +160,16 @@ class _SliderButtonState extends State<SliderButton> {
                       });
 
                       widget.action();
-                      final hasVibrator = await Vibration.hasVibrator() ?? false;
-                      if (widget.vibrationFlag && hasVibrator) {
-                        try {
-                          Vibration.vibrate(duration: 200);
-                        } catch (e) {
-                          print(e);
+
+                      if (widget.vibrationFlag) {
+                        final hasVibrator =
+                            await Vibration.hasVibrator() ?? false;
+                        if (hasVibrator) {
+                          try {
+                            Vibration.vibrate(duration: 200);
+                          } catch (e) {
+                            print(e);
+                          }
                         }
                       }
                     },
@@ -166,7 +178,11 @@ class _SliderButtonState extends State<SliderButton> {
                       height: widget.height,
                       alignment: Alignment.centerLeft,
                       padding: EdgeInsets.only(
-                        left: (widget.height - (widget.buttonSize == null ? widget.height  : widget.buttonSize!)) / 2,
+                        left: (widget.height -
+                                (widget.buttonSize == null
+                                    ? widget.height
+                                    : widget.buttonSize!)) /
+                            2,
                       ),
                       child: widget.child ??
                           Container(
@@ -179,12 +195,12 @@ class _SliderButtonState extends State<SliderButton> {
                                       ]
                                     : null,
                                 color: widget.buttonColor,
-                                borderRadius: BorderRadius.circular(widget.radius  )),
+                                borderRadius:
+                                    BorderRadius.circular(widget.radius)),
                             child: Center(child: widget.icon),
                           ),
                     ),
                   ),
-
           ],
         ),
       );
